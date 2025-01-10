@@ -7,6 +7,7 @@
 
 #define LA_SYM MO(SYM)
 #define LA_NAV MO(NAV)
+#define TD_BOOT TD(TD_DOUBLE_BOOT)
 
 enum layer_names {
     COL,
@@ -21,6 +22,21 @@ enum keycodes {
     OS_CTL,
     OS_ALT,
     OS_GUI
+};
+
+enum {
+    TD_DOUBLE_BOOT
+};
+
+void double_tap_boot(tap_dance_state_t *state, void *user_data) {
+    if (state -> count >= 2) {
+        reset_keyboard();
+    }
+}
+
+tap_dance_action_t tap_dance_actions[] = {
+    // Double tap for boot
+    [TD_DOUBLE_BOOT] = ACTION_TAP_DANCE_FN(double_tap_boot),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -51,11 +67,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [SYM] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        KC_NO, KC_ESC,  KC_LBRC, KC_LCBR, KC_LPRN, KC_TILD,                      KC_CIRC, KC_RPRN, KC_RCBR, KC_RBRC,  KC_GRV,   KC_NO,
+        KC_NO, KC_LBRC, KC_MINS,  KC_EQL, KC_RBRC, KC_TILD,                       KC_GRV,   KC_AT, KC_HASH, KC_PERC, KC_CIRC,   KC_NO,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_NO, KC_MINS, KC_ASTR,  KC_EQL, KC_UNDS,  KC_DLR,                      KC_HASH,  OS_CTL,  OS_SFT,  OS_ALT,  OS_GUI,   KC_NO,
+        KC_NO, KC_LCBR, KC_LPRN, KC_RPRN, KC_RCBR,  KC_ESC,                      KC_ASTR,  OS_CTL,  OS_SFT,  OS_ALT,  OS_GUI,   KC_NO,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_NO, KC_PLUS, KC_PIPE,   KC_AT, KC_SLSH, KC_PERC,                      XXXXXXX, KC_BSLS, KC_AMPR, KC_QUES, KC_EXLM,   KC_NO,
+        KC_NO, KC_PIPE, KC_UNDS, KC_PLUS, KC_SLSH,  KC_DLR,                      XXXXXXX, KC_BSLS, KC_AMPR, KC_QUES, KC_EXLM,   KC_NO,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______, _______, _______
                                       //`--------------------------'  `--------------------------'
@@ -63,7 +79,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [NAV] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_VOLU,                      QK_BOOT, KC_HOME, KC_PGUP, KC_PGDN,  KC_END,   KC_NO,
+        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_VOLU,                      TD_BOOT, KC_HOME, KC_PGUP, KC_PGDN,  KC_END,   KC_NO,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+-----------------+--------+--------|
         KC_NO,  OS_GUI,  OS_ALT,  OS_SFT,  OS_CTL, KC_VOLD,                       KC_ENT, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT,   KC_NO,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -124,7 +140,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     return true;
 }
-
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, SYM, NAV, NUM);
