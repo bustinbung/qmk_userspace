@@ -79,11 +79,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [NAV] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_VOLU,                      TD_BOOT, KC_HOME, KC_PGUP, KC_PGDN,  KC_END,   KC_NO,
+        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_VOLU,                      XXXXXXX, KC_HOME, KC_PGUP, KC_PGDN,  KC_END,   KC_NO,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+-----------------+--------+--------|
         KC_NO,  OS_GUI,  OS_ALT,  OS_SFT,  OS_CTL, KC_VOLD,                       KC_ENT, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT,   KC_NO,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_NO, XXXXXXX, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT,                       KC_TAB, KC_BSPC,  KC_DEL, KC_CAPS, XXXXXXX,   KC_NO,
+        KC_NO, TD_BOOT, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT,                       KC_TAB, KC_BSPC,  KC_DEL, KC_CAPS, XXXXXXX,   KC_NO,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______, _______, _______
                                       //`--------------------------'  `--------------------------'
@@ -93,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
         KC_NO,    KC_7,    KC_5,    KC_3,    KC_1,    KC_9,                         KC_8,    KC_0,    KC_2,    KC_4,    KC_6,   KC_NO,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_NO,  OS_GUI,  OS_ALT,  OS_SFT,  OS_CTL,  KC_F11,                       KC_F10,  OS_CTL,  OS_ALT,  OS_SFT,  OS_GUI,   KC_NO,
+        KC_NO,  OS_GUI,  OS_ALT,  OS_SFT,  OS_CTL,  KC_F11,                       KC_F10,  OS_CTL,  OS_SFT,  OS_ALT,  OS_GUI,   KC_NO,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
         KC_NO,   KC_F7,   KC_F5,   KC_F3,   KC_F1,   KC_F9,                        KC_F8,  KC_F12,   KC_F2,   KC_F4,   KC_F6,   KC_NO,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
