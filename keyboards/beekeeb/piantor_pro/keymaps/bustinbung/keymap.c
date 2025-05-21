@@ -7,6 +7,7 @@
 
 #define LA_SYM MO(SYM)
 #define LA_NAV MO(NAV)
+#define LA_MOU MO(MOU)
 #define TD_BOOT TD(TD_DOUBLE_BOOT)
 
 enum layer_names {
@@ -14,7 +15,8 @@ enum layer_names {
     QWT,
     SYM,
     NAV,
-    NUM
+    NUM,
+    MOU
 };
 
 enum keycodes {
@@ -48,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
         KC_NO,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                         KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SCLN,   KC_NO,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                           LA_NAV,  KC_SPC,   KC_NO,      KC_NO, KC_LSFT,  LA_SYM
+                                           LA_NAV,  KC_SPC,  LA_MOU,    KC_HYPR, KC_LSFT,  LA_SYM
                                       //`--------------------------'  `--------------------------'
 
   ),
@@ -61,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
         KC_NO,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,   KC_NO,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                           LA_NAV,  KC_SPC,   KC_NO,      KC_NO, KC_LSFT,  LA_SYM
+                                           LA_NAV,  KC_SPC,  LA_MOU,    KC_HYPR, KC_LSFT,  LA_SYM
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -99,6 +101,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______, _______, _______
                                       //`--------------------------'  `--------------------------'
+  ),
+
+
+    [MOU] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+-----------------+--------+--------|
+        KC_NO,  OS_GUI,  OS_ALT,  OS_SFT,  OS_CTL,   KC_NO,                        KC_NO, MS_LEFT, MS_DOWN,   MS_UP, MS_RGHT,   KC_NO,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                        KC_NO, MS_WHLL, MS_WHLD, MS_WHLU, MS_WHLR,   KC_NO,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          _______, _______, _______,    MS_BTN3, MS_BTN1, MS_BTN2
+                                      //`--------------------------'  `--------------------------'
   )
 };
 
@@ -106,6 +121,7 @@ bool is_oneshot_cancel_key(uint16_t keycode) {
     switch (keycode) {
         case LA_SYM:
         case LA_NAV:
+        case LA_MOU:
             return true;
         default:
             return false;
@@ -116,6 +132,7 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     switch (keycode) {
         case LA_SYM:
         case LA_NAV:
+        case LA_MOU:
         case KC_LSFT:
         case OS_GUI:
         case OS_ALT:
