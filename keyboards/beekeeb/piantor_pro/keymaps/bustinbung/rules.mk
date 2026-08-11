@@ -2,4 +2,4 @@ TAP_DANCE_ENABLE = yes
 TRI_LAYER_ENABLE = yes
 MOUSEKEY_ENABLE = yes
 
-SRC += oneshot.c
+SRC += features/oneshot.c

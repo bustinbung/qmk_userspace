@@ -3,7 +3,8 @@
 
 #include QMK_KEYBOARD_H
 
-#include "oneshot.h"
+#include "features/oneshot.h"
+#include "features/adaptive_keys.h"
 
 #define LA_SYM MO(SYM)
 #define LA_NAV MO(NAV)
