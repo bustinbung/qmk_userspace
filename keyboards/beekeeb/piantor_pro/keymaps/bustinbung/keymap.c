@@ -31,7 +31,6 @@ enum keycodes {
     OS_CTL,
     OS_ALT,
     OS_GUI,
-    KC_CYCLE_LAYER
 };
 
 enum {
