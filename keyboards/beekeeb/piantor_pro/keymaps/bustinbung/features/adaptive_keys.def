@@ -1,0 +1,25 @@
+// Fix SFB
+AK(SC, KC_S, KC_C, false, KC_D)
+AK(SD, KC_S, KC_D, false, KC_C)
+
+AK(SW, KC_S, KC_W, false, KC_R)
+AK(SR, KC_S, KC_R, false, KC_W)
+
+AK(CS, KC_C, KC_S, false, KC_X)
+AK(CX, KC_C, KC_X, false, KC_S)
+
+AK(RL, KC_R, KC_L, false, KC_Z)
+AK(RZ, KC_R, KC_Z, false, KC_L)
+
+AK(UE, KC_U, KC_E, false, KC_O)
+AK(UO, KC_U, KC_O, false, KC_E)
+
+AK(PH, KC_P, KC_H, false, KC_N)
+AK(PN, KC_P, KC_N, false, KC_H)
+
+// Fix scissor
+AK(BR, KC_B, KC_R, false, KC_D)
+AK(BD, KC_B, KC_D, false, KC_R)
+
+AK(MB, KC_M, KC_B, false, KC_C)
+AK(MC, KC_M, KC_C, false, KC_B)

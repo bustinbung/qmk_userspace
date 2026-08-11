@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
+// #include "print.h"
 
 #include "features/oneshot.h"
 #include "features/adaptive_keys.h"
@@ -10,6 +11,10 @@
 #define LA_NAV MO(NAV)
 #define LA_MOU MO(MOU)
 #define TD_BOOT TD(TD_DOUBLE_BOOT)
+#define TD_SWT TD(TD_DOUBLE_LAYER_SWITCH)
+
+#define LAYER_CYCLE_START MAY
+#define LAYER_CYCLE_END QWT
 
 enum layer_names {
     MAY,
@@ -25,11 +30,13 @@ enum keycodes {
     OS_SFT = SAFE_RANGE,
     OS_CTL,
     OS_ALT,
-    OS_GUI
+    OS_GUI,
+    KC_CYCLE_LAYER
 };
 
 enum {
-    TD_DOUBLE_BOOT
+    TD_DOUBLE_BOOT,
+    TD_DOUBLE_LAYER_SWITCH
 };
 
 void double_tap_boot(tap_dance_state_t *state, void *user_data) {
@@ -38,9 +45,27 @@ void double_tap_boot(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+void double_tap_layer_switch(tap_dance_state_t *state, void *user_data) {
+    if (state -> count >= 2) {
+        // this sucks and is janky, but works for 3 layers
+        uint8_t current_layer = default_layer_state / 2;
+
+        if (current_layer > LAYER_CYCLE_END || current_layer < LAYER_CYCLE_START) {
+            return;
+        }
+
+        uint8_t next_layer = current_layer + 1;
+        if (next_layer > LAYER_CYCLE_END) {
+            next_layer = LAYER_CYCLE_START;
+        }
+        set_single_default_layer(next_layer);
+    }
+}
+
 tap_dance_action_t tap_dance_actions[] = {
     // Double tap for boot
     [TD_DOUBLE_BOOT] = ACTION_TAP_DANCE_FN(double_tap_boot),
+    [TD_DOUBLE_LAYER_SWITCH] = ACTION_TAP_DANCE_FN(double_tap_layer_switch),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -86,9 +111,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
         KC_NO, KC_LBRC, KC_MINS,  KC_EQL, KC_RBRC, KC_TILD,                       KC_GRV,   KC_AT, KC_HASH, KC_PERC, KC_CIRC,   KC_NO,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_NO, KC_LCBR, KC_LPRN, KC_RPRN, KC_RCBR,  KC_ESC,                      KC_ASTR,  OS_CTL,  OS_SFT,  OS_ALT,  OS_GUI,   KC_NO,
+        KC_NO, KC_LCBR, KC_LPRN, KC_RPRN, KC_RCBR,  KC_ESC,                      KC_SCLN,  OS_CTL,  OS_SFT,  OS_ALT,  OS_GUI,   KC_NO,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_NO, KC_PIPE, KC_UNDS, KC_PLUS, KC_SLSH,  KC_DLR,                      XXXXXXX, KC_BSLS, KC_AMPR, KC_QUES, KC_EXLM,   KC_NO,
+        KC_NO, KC_PIPE, KC_UNDS, KC_PLUS, KC_SLSH,  KC_DLR,                      KC_ASTR, KC_BSLS, KC_AMPR, KC_QUES, KC_EXLM,   KC_NO,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______, _______, _______
                                       //`--------------------------'  `--------------------------'
@@ -100,7 +125,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+-----------------+--------+--------|
         KC_NO,  OS_GUI,  OS_ALT,  OS_SFT,  OS_CTL, KC_VOLD,                       KC_ENT, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT,   KC_NO,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_NO, TD_BOOT, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT,                       KC_TAB, KC_BSPC,  KC_DEL, KC_CAPS, XXXXXXX,   KC_NO,
+        KC_NO, TD_BOOT,  TD_SWT, KC_MPRV, KC_MPLY, KC_MNXT,                       KC_TAB, KC_BSPC,  KC_DEL, KC_CAPS, XXXXXXX,   KC_NO,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______, _______, _______
                                       //`--------------------------'  `--------------------------'
@@ -170,8 +195,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     update_oneshot(&os_alt_state, KC_LALT, OS_ALT, keycode, record);
     update_oneshot(&os_gui_state, KC_LGUI, OS_GUI, keycode, record);
 
+    #ifdef ADAPTIVE_KEYS_ENABLE
+        if (!process_adaptive_key(keycode, record)) {
+            return false;
+        }
+    #endif
+
     return true;
 }
+
+// void keyboard_post_init_user(void) {
+//     debug_enable = true;
+//     //debug_matrix=true;
+//     debug_keyboard=true;
+//     //debug_mouse=true;
+// }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, SYM, NAV, NUM);
