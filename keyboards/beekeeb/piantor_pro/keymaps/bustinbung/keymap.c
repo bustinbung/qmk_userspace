@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
-// #include "print.h"
+#include "print.h"
 
 #include "features/oneshot.h"
 #include "features/adaptive_keys.h"
@@ -58,6 +58,15 @@ void double_tap_layer_switch(tap_dance_state_t *state, void *user_data) {
             next_layer = LAYER_CYCLE_START;
         }
         set_single_default_layer(next_layer);
+    }
+}
+
+void double_tap_toggle_mods(tap_dance_state_t *state, void *user_data) {
+    if (state -> count >= 2) {
+        print("swap triggered");
+        uprintf("config val: %b", keymap_config.swap_lctl_lgui);
+        keymap_config.swap_lctl_lgui = !keymap_config.swap_lctl_lgui;
+        keymap_config.swap_rctl_rgui = !keymap_config.swap_rctl_rgui;
     }
 }
 
@@ -203,12 +212,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
-// void keyboard_post_init_user(void) {
-//     debug_enable = true;
-//     //debug_matrix=true;
-//     debug_keyboard=true;
-//     //debug_mouse=true;
-// }
+void keyboard_post_init_user(void) {
+    debug_enable = true;
+    //debug_matrix=true;
+    //debug_keyboard=true;
+    //debug_mouse=true;
+}
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, SYM, NAV, NUM);
