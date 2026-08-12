@@ -12,6 +12,7 @@
 #define LA_MOU MO(MOU)
 #define TD_BOOT TD(TD_DOUBLE_BOOT)
 #define TD_SWT TD(TD_DOUBLE_LAYER_SWITCH)
+#define TD_TOGG TD(TD_DOUBLE_TOGGLE_MOD)
 
 #define LAYER_CYCLE_START MAY
 #define LAYER_CYCLE_END QWT
@@ -35,7 +36,8 @@ enum keycodes {
 
 enum {
     TD_DOUBLE_BOOT,
-    TD_DOUBLE_LAYER_SWITCH
+    TD_DOUBLE_LAYER_SWITCH,
+    TD_DOUBLE_TOGGLE_MOD
 };
 
 void double_tap_boot(tap_dance_state_t *state, void *user_data) {
@@ -74,6 +76,7 @@ tap_dance_action_t tap_dance_actions[] = {
     // Double tap for boot
     [TD_DOUBLE_BOOT] = ACTION_TAP_DANCE_FN(double_tap_boot),
     [TD_DOUBLE_LAYER_SWITCH] = ACTION_TAP_DANCE_FN(double_tap_layer_switch),
+    [TD_DOUBLE_TOGGLE_MOD] = ACTION_TAP_DANCE_FN(double_tap_toggle_mods),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -129,7 +132,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [NAV] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        KC_NO,   KC_NO,   KC_NO,   KC_NO,  KC_ESC, KC_VOLU,                      XXXXXXX, KC_HOME, KC_PGDN, KC_PGUP,  KC_END,   KC_NO,
+        KC_NO, TD_TOGG,   KC_NO,   KC_NO,  KC_ESC, KC_VOLU,                      XXXXXXX, KC_HOME, KC_PGDN, KC_PGUP,  KC_END,   KC_NO,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+-----------------+--------+--------|
         KC_NO,  OS_GUI,  OS_ALT,  OS_SFT,  OS_CTL, KC_VOLD,                       KC_ENT, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT,   KC_NO,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
