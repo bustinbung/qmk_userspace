@@ -73,7 +73,6 @@ void double_tap_toggle_mods(tap_dance_state_t *state, void *user_data) {
 }
 
 tap_dance_action_t tap_dance_actions[] = {
-    // Double tap for boot
     [TD_DOUBLE_BOOT] = ACTION_TAP_DANCE_FN(double_tap_boot),
     [TD_DOUBLE_LAYER_SWITCH] = ACTION_TAP_DANCE_FN(double_tap_layer_switch),
     [TD_DOUBLE_TOGGLE_MOD] = ACTION_TAP_DANCE_FN(double_tap_toggle_mods),
