@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
-#include "print.h"
+// #include "print.h"
 
 #include "features/oneshot.h"
 #include "features/adaptive_keys.h"
@@ -215,7 +215,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 void keyboard_post_init_user(void) {
-    debug_enable = true;
+    //debug_enable = true;
     //debug_matrix=true;
     //debug_keyboard=true;
     //debug_mouse=true;
